@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weihnachtsüberraschung für Doro & Rainer</title>
+    <style>
+        /* --- CSS STYLES --- */
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #2c3e50;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1578586047277-2f5a896677f2?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            border: 2px solid #d4af37;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            color: #c0392b;
+            font-size: 3.5rem;
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Input Styling */
+        input[type="text"] {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 70%;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            font-weight: 600;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #a93226;
+            transform: scale(1.05);
+        }
+
+        .btn-print {
+            background-color: #2c3e50;
+        }
+        .btn-print:hover {
+            background-color: #34495e;
+        }
+
+        #error-msg {
+            color: #c0392b;
+            display: none;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .voucher-content {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .cafe-link {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #d4af37;
+            font-weight: bold;
+            border-bottom: 2px solid #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            margin-top: 40px;
+            font-style: italic;
+            color: #555;
+            font-size: 1rem;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .deco-icon {
+            font-size: 4rem;
+            margin: 10px 0;
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            font-size: 20px;
+            animation: fall linear forwards;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(720deg); }
+        }
+
+        /* --- DRUCK STYLES (Print CSS) --- */
+        @media print {
+            body {
+                background: none;
+                display: block;
+                color: black;
+            }
+            .card {
+                box-shadow: none;
+                border: 2px solid #000; /* Schwarzer Rand beim Druck */
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                position: static;
+                padding: 0;
+            }
+            /* Verstecke Login, Buttons und Fehlermeldungen beim Drucken */
+            #login-screen, .btn, #error-msg, .confetti {
+                display: none !important;
+            }
+            /* Zeige Gutschein immer an beim Drucken */
+            .voucher-content {
+                display: block !important;
+                opacity: 1;
+                transform: none;
+                padding: 20px;
+            }
+            .cafe-link {
+                color: black;
+                text-decoration: underline;
+                border: none;
+            }
+            h1 { color: black; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="login-screen">
+            <h1>Frohe Weihnachten</h1>
+            <h2>Für Doro & Rainer</h2>
+            <p>Wir haben eine kleine Überraschung für euch.<br>Bitte gebt den Geheimcode ein:</p>
+            
+            <input type="text" id="code-input" placeholder="Code eingeben..." onkeyup="checkEnter(event)">
+            <br>
+            <button class="btn" onclick="checkCode()">Geschenk öffnen</button>
+            <p id="error-msg">Oh, das war leider der falsche Code. Versucht es nochmal! 🎄</p>
+        </div>
+
+        <div id="voucher-content" class="voucher-content">
+            <span class="deco-icon">🥐☕</span>
+            <h1>Gutschein</h1>
+            <h2>für ein gemeinsames Frühstück</h2>
+            
+            <p>
+                Liebe Doro, lieber Rainer,<br><br>
+                dieses Jahr schenken wir euch Zeit und Genuss. Wir laden euch ganz herzlich zu einem gemütlichen, ausgiebigen Frühstück ein.
+            </p>
+
+            <p><strong>Wo: Café Konditush</strong></p>
+            
+            <a href="https://www.konditush.de/" target="_blank" class="cafe-link">www.konditush.de</a>
+
+            <div class="no-print-area">
+                <br>
+                <button class="btn btn-print" onclick="window.print()">🖨️ Gutschein ausdrucken</button>
+            </div>
+
+            <div class="signature">
+                Von Herzen,<br>
+                <strong>Sonja, Andris, Michele & Tobias</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        // NEUER CODE: DRXMAS25 (Groß-/Kleinschreibung wird ignoriert)
+        const SECRET_CODE = "DRXMAS25"; 
+
+        function checkCode() {
+            // trim() entfernt Leerzeichen an Anfang und Ende
+            // toUpperCase() wandelt die Eingabe in Großbuchstaben um, um Groß-/Kleinschreibung zu ignorieren
+            const input = document.getElementById('code-input').value.trim().toUpperCase();
+            const errorMsg = document.getElementById('error-msg');
+            const loginScreen = document.getElementById('login-screen');
+            const voucherContent = document.getElementById('voucher-content');
+
+            // Prüfung auf den neuen Code
+            if(input === SECRET_CODE.toUpperCase()) {
+                // Richtig!
+                errorMsg.style.display = 'none'; // Fehler ausblenden, falls er vorher sichtbar war
+                loginScreen.style.display = 'none';
+                voucherContent.style.display = 'block';
+                startConfetti();
+            } else {
+                // Falsch
+                errorMsg.style.display = 'block';
+                shakeCard();
+            }
+        }
+
+        // Ermöglicht Drücken der "Enter"-Taste
+        function checkEnter(event) {
+            if (event.key === "Enter") checkCode();
+        }
+
+        // Animation für falsche Eingabe
+        function shakeCard() {
+            const card = document.querySelector('.card');
+            card.style.transform = "translateX(5px)";
+            setTimeout(() => card.style.transform = "translateX(-5px)", 50);
+            setTimeout(() => card.style.transform = "translateX(5px)", 100);
+            setTimeout(() => card.style.transform = "translateX(0)", 150);
+        }
+        
+        // Konfetti-Animation
+        function startConfetti() {
+            const emojis = ['❄️', '🎄', '🎁', '🥐', '☕', '❤️'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+    </script>
+</body>
+</html>
